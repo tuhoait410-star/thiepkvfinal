@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 20/10 - Cô Giáo Khánh Vân 🌹</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c2185b; /* Hồng sẫm quý phái */
+            --primary-light: #e91e63;
+            --rose-soft: #f8bbd0;
+            --gold: #d4af37; /* Vàng kim */
+            --gold-light: #fef5d1;
+            --light-bg: #fff8fa;
+            --shadow: 0 15px 35px rgba(194, 24, 91, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Music Floating Control */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: #ffffff;
+            border: 2px solid var(--gold);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .music-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: var(--primary);
+        }
+
+        .music-btn.playing {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header / Banner */
+        header {
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .teacher-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--gold-light);
+            padding: 8px 26px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(194, 24, 91, 0.3);
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.3rem, 5vw, 3.8rem);
+            color: var(--primary);
+            margin-bottom: 12px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .sub-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .target-text {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .divider {
+            width: 140px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px auto;
+        }
+
+        /* Photo Gallery Section */
+        .gallery-section {
+            margin: 40px 0 60px;
+            text-align: center;
+        }
+
+        .section-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .gallery-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+
+        .photo-card {
+            background: #ffffff;
+            padding: 15px 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #fce4ec;
+            transition: all 0.4s ease;
+            max-width: 380px;
+            width: 100%;
+            position: relative;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(194, 24, 91, 0.25);
+            border-color: var(--gold);
+        }
+
+        .photo-wrapper {
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .photo-card:hover .photo-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .photo-caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* 3D Envelope Section (Đã khắc phục hoàn toàn) */
+        .envelope-wrapper {
+            margin: 40px auto 90px;
+            perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .envelope-container {
+            width: 100%;
+            max-width: 600px;
+            height: 380px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: #f8d7da;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 2px solid #f1b0b7;
+            transform-style: preserve-3d;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 190px;
+            background: #f1aeb5;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top center;
+            transition: transform 0.6s 0.3s ease, z-index 0.2s 0.3s;
+            z-index: 5;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            backface-visibility: hidden;
+            pointer-events: none;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 240px;
+            background: #f7c6cb;
+            clip-path: polygon(0 100%, 0 0, 50% 50%, 100% 0, 100% 100%);
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            z-index: 4;
+            pointer-events: none; /* Cho phép sự kiện click xuyên qua tới thư */
+        }
+
+        .envelope-seal {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 65px;
+            height: 65px;
+            background: var(--primary);
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            font-size: 1.6rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+        }
+
+        /* Letter Inside (Thư bên trong) */
+        .letter {
+            position: absolute;
+            bottom: 20px;
+            left: 5%;
+            width: 90%;
+            background: #ffffff;
+            padding: 35px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            z-index: 3;
+            transition: transform 0.8s 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+            border: 1px solid #fce4ec;
+            opacity: 0.95;
+        }
+
+        .letter-content {
+            opacity: 0;
+            transition: opacity 0.5s 0.8s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        .letter h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .letter p {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 25px;
+            font-weight: bold;
+        }
+
+        /* MỞ PHONG THƯ (OPEN STATE) */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-container.open .envelope-seal {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.3);
+        }
+
+        .envelope-container.open .letter {
+            transform: translateY(-200px);
+            z-index: 10;
+            opacity: 1;
+        }
+
+        .envelope-container.open .letter-content {
+            opacity: 1;
+            max-height: 2000px;
+        }
+
+        .click-hint {
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-top: 25px;
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 22px;
+            border-radius: 20px;
+            border: 1px solid var(--rose-soft);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 35px 0;
+            color: #777;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header { padding: 35px 0 15px; }
+            .photo-wrapper { height: 350px; }
+            .envelope-container { height: 320px; }
+            .envelope-flap { height: 160px; }
+            .envelope-pocket { height: 200px; }
+            .envelope-seal { top: 120px; width: 55px; height: 55px; font-size: 1.2rem; }
+            .letter { padding: 25px 18px; }
+            .envelope-container.open .letter { transform: translateY(-150px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas Hiệu ứng Cánh Hoa & Hạt Sáng -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Thẻ Audio Nhạc Nền (Đổi nhac.mp3 thành bài hát của bạn nếu cần) -->
+    <audio id="bgMusic" src="nhac.mp3" loop preload="auto"></audio>
+
+    <!-- Nút Bật/Tắt Nhạc Nền ở góc phải -->
+    <button class="music-btn" id="musicBtn" title="Bật/Tắt Nhạc Nền">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- Banner Header -->
+        <header>
+            <div class="teacher-badge">Kính Tặng Cô Giáo Khánh Vân 🌹</div>
+            <h1 class="main-title">CHÚC MỪNG NGÀY 20/10</h1>
+            <div class="sub-title">Xinh Đẹp — Rạng Rỡ & Hạnh Phúc</div>
+            <div class="divider"></div>
+            <p class="target-text">
+                Nhân Ngày Phụ Nữ Việt Nam 20/10, xin gửi tới Cô giáo Khánh Vân những lời chúc tốt đẹp nhất, chúc Cô luôn giữ vững nụ cười rạng rỡ, sự duyên dáng và tràn đầy năng lượng tích cực!
+            </p>
+        </header>
+
+        <!-- Bộ Sưu Tập Ảnh Cô Giáo -->
+        <section class="gallery-section">
+            <h2 class="section-heading">✨ Khoảnh Khắc Rạng Rỡ ✨</h2>
+            <div class="gallery-grid">
+                <!-- Ảnh 1 -->
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="anh1.jpg" alt="Cô giáo Khánh Vân">
+                    </div>
+                    <div class="photo-caption">Nét Đẹp Duyên Dáng & Sang Trọng</div>
+                </div>
+
+                <!-- Ảnh 2 -->
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="anh2.jpg" alt="Cô giáo Khánh Vân">
+                    </div>
+                    <div class="photo-caption">Nụ Cười Ngọt Ngào & Tinh Tế</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bức Thư Tri Ân 3D -->
+        <section class="envelope-wrapper">
+            <div class="envelope-container" id="envelope">
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-seal">🌹</div>
+                    <div class="envelope-pocket"></div>
+                    
+                    <div class="letter">
+                        <div class="letter-content">
+                            <h3>Thư Chúc Mừng 20/10 💌</h3>
+                            <p><strong>Kính gửi Cô giáo Khánh Vân,</strong></p>
+                            <p>
+                                Nhân ngày Phụ nữ Việt Nam 20/10, xin gửi tới Cô lời chúc mừng chân thành và tươi đẹp nhất!
+                            </p>
+                            <p>
+                                Chúc Cô Khánh Vân luôn giữ vững nét đẹp thanh lịch, sự tâm huyết và niềm vui rạng rỡ trong cuộc sống. Mong rằng mỗi ngày đi qua đều mang đến cho Cô thật nhiều niềm vui, sức khỏe, sự thành công và những trải nghiệm tuyệt vời nhất.
+                            </p>
+                            <p>
+                                Cảm ơn Cô vì luôn truyền cảm hứng tích cực, sự ấm áp và hình ảnh người phụ nữ hiện đại, duyên dáng và tài năng!
+                            </p>
+                            <div class="letter-signature">
+                                Trân trọng gửi tặng Cô! ❤️
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="click-hint" id="clickHint">✨ Chạm vào phong thư để mở lời chúc mừng ✨</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>Chúc Cô giáo Khánh Vân một ngày 20/10 tràn ngập hoa, quà & hạnh phúc! ✨</strong></p>
+        </footer>
+    </div>
+
+    <!-- Script Hiệu Ứng & Nhạc Nền -->
+    <script>
+        /* 1. HIỆU ỨNG CÁNH HOA RƠI (CANVAS) */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = -20;
+                this.size = Math.random() * 12 + 8;
+                this.speedY = Math.random() * 1.5 + 0.8;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = (Math.random() - 0.5) * 0.03;
+                this.color = `hsl(${Math.random() * 20 + 335}, 85%, ${Math.random() * 20 + 65}%)`;
+                this.opacity = Math.random() * 0.5 + 0.5;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.angle) * 0.8 + this.speedX;
+                this.angle += this.spin;
+
+                if (this.y > height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+                ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        const petals = Array.from({ length: 35 }, () => new Petal());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            petals.forEach(petal => {
+                petal.update();
+                petal.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+
+        animateCanvas();
+
+        /* 2. LOGIC MỞ THƯ 3D (ĐÃ SỬA LỖI CLICK) */
+        const envelope = document.getElementById('envelope');
+        const clickHint = document.getElementById('clickHint');
+
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('open');
+            if (envelope.classList.contains('open')) {
+                clickHint.innerText = "✨ Chạm lần nữa để gấp thư lại nhé ✨";
+            } else {
+                clickHint.innerText = "✨ Chạm vào phong thư để mở lời chúc mừng ✨";
+            }
+            // Phát nhạc tự động khi người dùng chạm vào thư lần đầu tiên
+            playMusicOnce();
+        });
+
+        /* 3. LOGIC BẬT/TẮT NHẠC NỀN (ĐÃ KHẮC PHỤC LỖI TRÌNH DUYỆT CHẶN AUTOPLAY) */
+        const musicBtn = document.getElementById('musicBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        let isMusicStarted = false;
+
+        function playMusicOnce() {
+            if (!isMusicStarted) {
+                isMusicStarted = true;
+                bgMusic.play().then(() => {
+                    musicBtn.classList.add('playing');
+                }).catch(err => {
+                    console.log("Không thể tự phát nhạc (cần kiểm tra file nhac.mp3):", err);
+                });
+            }
+        }
+
+        // Tự động kích hoạt âm thanh ngay khi chạm/click bất kỳ vị trí nào trên màn hình lần đầu
+        document.addEventListener('click', () => {
+            playMusicOnce();
+        }, { once: true });
+
+        // Nút bật/tắt nhạc riêng ở góc màn hình
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Không cho kích hoạt sự kiện lật thư
+            isMusicStarted = true;
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    musicBtn.classList.add('playing');
+                }).catch(err => {
+                    alert("Chưa phát được nhạc! Hãy kiểm tra file 'nhac.mp3' đã đặt cùng thư mục với file index.html chưa nhé.");
+                });
+            } else {
+                bgMusic.pause();
+                musicBtn.classList.remove('playing');
+            }
+        });
+    </script>
+</body>
+</html>
